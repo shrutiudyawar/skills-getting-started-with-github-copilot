@@ -89,21 +89,25 @@ section h3 {
 }
 
 .participants-list {
-  margin-top: 8px;
+  margin-top: 12px;
   padding-left: 0;
-  max-height: 120px;
+  max-height: 140px;
   overflow: auto;
   list-style: none;
 }
 
 .participants-list li {
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
   font-size: 14px;
   color: #444;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
 }
 
 .remove-participant {
@@ -113,8 +117,9 @@ section h3 {
   font-size: 18px;
   line-height: 1;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background-color 0.15s ease;
 }
 
 .remove-participant:hover {

@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
-      const response = await fetch("/activities");
+      const response = await fetch("/activities", { cache: "no-store" });
       const activities = await response.json();
 
       // Clear loading message
@@ -21,6 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
         activityCard.className = "activity-card";
 
         const spotsLeft = details.max_participants - details.participants.length;
+        const participantsHtml = details.participants.length > 0
+          ? `<ul class="participants-list">
+              ${details.participants.map(p => `<li><span class="participant-email">${p}</span><button class="remove-participant" data-activity="${name}" data-email="${p}" aria-label="Unregister ${p}" title="Unregister ${p}">🗑️</button></li>`).join('')}
+            </ul>`
+          : `<p class="no-participants">No participants have signed up yet.</p>`;
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
@@ -28,10 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
           <div class="participants-section">
-            <p><strong>Participants (${details.participants.length}):</strong></p>
-            <ul class="participants-list">
-              ${details.participants.map(p => `<li><span class="participant-email">${p}</span><button class="remove-participant" data-activity="${name}" data-email="${p}" aria-label="Remove ${p}">&times;</button></li>`).join('')}
-            </ul>
+            <h5>Participants (${details.participants.length})</h5>
+            ${participantsHtml}
           </div>
         `;
 
@@ -104,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
         messageDiv.className = "success";
         signupForm.reset();
         // Refresh activities so the new participant appears immediately
-        fetchActivities();
+        await fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
